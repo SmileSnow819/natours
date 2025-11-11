@@ -1,5 +1,6 @@
 import AppBar from './components/AppBar';
 import AppFooter from './components/AppFooter';
+import { AuthProvider } from './contexts/AuthContext';
 import './globals.css'; // 确保导入全局样式文件
 
 export const metadata = {
@@ -19,14 +20,16 @@ export default function RootLayout({
 	return (
 		<html lang="zh">
 			<body className="font-sans antialiased">
-				{/* 导航栏*/}
-				<AppBar></AppBar>
+				<AuthProvider>
+					{/* 导航栏*/}
+					<AppBar></AppBar>
 
-				{/* 页面内容注入区：所有 page.tsx 的内容都会自动放在这里 */}
-				<main>{children}</main>
+					{/* 页面内容注入区：所有 page.tsx 的内容都会自动放在这里 */}
+					<main>{children}</main>
 
-				{/* 页脚 */}
-				<AppFooter></AppFooter>
+					{/* 页脚 */}
+					<AppFooter></AppFooter>
+				</AuthProvider>
 			</body>
 		</html>
 	);

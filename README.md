@@ -1,36 +1,201 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏔️ Natours 旅游平台
 
-## Getting Started
+一个现代化的旅游预订平台，使用 Next.js 14 和 TypeScript 构建，与 natours-backend 后端 API 完全集成。
 
-First, run the development server:
+## ✨ 功能特性
+
+### 🔐 用户认证系统
+
+- **用户注册** - 创建新账户
+- **用户登录** - 安全登录系统
+- **忘记密码** - 密码重置功能
+- **用户信息管理** - 更新个人信息和密码
+
+### 🗺️ 旅游路线管理
+
+- **浏览所有路线** - 查看所有可用的旅游路线
+- **智能筛选** - 按难度、价格范围筛选
+- **排序功能** - 按名称、价格排序
+- **旅游详情** - 查看详细的旅游信息
+
+### 💬 评论系统
+
+- **发表评论** - 用户可以对旅游路线发表评论
+- **评分系统** - 1-5星评分
+- **评论展示** - 查看其他用户的评价
+
+### 👤 个人中心
+
+- **个人信息管理** - 更新姓名、头像
+- **密码修改** - 安全修改密码
+- **账户管理** - 注销账户功能
+
+## 🚀 技术栈
+
+- **前端框架**: Next.js 14 (App Router)
+- **语言**: TypeScript
+- **样式**: Tailwind CSS
+- **状态管理**: React Context
+- **HTTP客户端**: Axios
+- **认证**: JWT (Bearer Token)
+
+## 📦 项目结构
+
+```
+src/
+├── app/
+│   ├── components/          # 可复用组件
+│   │   ├── AppBar.tsx       # 导航栏
+│   │   ├── AppFooter.tsx    # 页脚
+│   │   ├── LoadingSpinner.tsx # 加载组件
+│   │   └── ErrorMessage.tsx  # 错误提示组件
+│   ├── contexts/            # React Context
+│   │   └── AuthContext.tsx  # 认证上下文
+│   ├── services/            # API 服务
+│   │   └── api.ts           # API 客户端
+│   ├── types/               # TypeScript 类型定义
+│   │   ├── auth.ts          # 认证相关类型
+│   │   └── tours.ts         # 旅游相关类型
+│   ├── login/               # 登录页面
+│   ├── signup/              # 注册页面
+│   ├── profile/             # 个人中心
+│   ├── tours/               # 旅游相关页面
+│   │   ├── page.tsx         # 旅游列表
+│   │   └── [id]/            # 动态路由
+│   │       └── page.tsx     # 旅游详情
+│   ├── layout.tsx           # 根布局
+│   └── page.tsx             # 首页
+```
+
+## 🛠️ 安装和运行
+
+### 环境要求
+
+- Node.js 18+
+- npm 或 yarn
+
+### 安装依赖
+
+```bash
+npm install
+```
+
+### 开发环境运行
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+访问 http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 生产环境构建
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## 🔌 后端集成
 
-To learn more about Next.js, take a look at the following resources:
+本项目与 **natours-backend** 后端应用完全集成。前端通过环境变量配置连接到后端 API。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 环境配置
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+创建 `.env.local` 文件配置后端 API 地址：
 
-## Deploy on Vercel
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8000/api/v1
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 同时运行前后端
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **启动后端** (在 natours-backend 目录):
+
+   ```bash
+   npm start
+   ```
+
+2. **启动前端** (在 natours 目录):
+   ```bash
+   npm run dev
+   ```
+
+详细部署说明请查看 [DEPLOYMENT.md](DEPLOYMENT.md)
+
+## 🔌 API 集成
+
+项目与 natours-backend API 集成，支持以下功能：
+
+### 认证接口
+
+- `POST /users/signup` - 用户注册
+- `POST /users/login` - 用户登录
+- `POST /users/forgotPassword` - 忘记密码
+- `PATCH /users/resetPassword/:token` - 重置密码
+
+### 用户管理接口
+
+- `GET /users/getMe` - 获取当前用户信息
+- `PATCH /users/updateMe` - 更新用户信息
+- `DELETE /users/deleteMe` - 注销账户
+- `PATCH /users/updateMyPassword` - 更新密码
+
+### 旅游路线接口
+
+- `GET /tours` - 获取所有旅游路线
+- `GET /tours/:id` - 获取单个旅游路线
+- `POST /tours` - 创建旅游路线
+- `PATCH /tours/:id` - 更新旅游路线
+- `DELETE /tours/:id` - 删除旅游路线
+
+### 评论接口
+
+- `GET /reviews` - 获取所有评论
+- `POST /reviews` - 创建评论
+- `PATCH /reviews/:id` - 更新评论
+- `DELETE /reviews/:id` - 删除评论
+
+## 🎨 UI/UX 特性
+
+- **响应式设计** - 适配桌面、平板、手机
+- **现代化界面** - 使用 Tailwind CSS 构建
+- **加载状态** - 优雅的加载动画
+- **错误处理** - 友好的错误提示
+- **无障碍访问** - 支持键盘导航和屏幕阅读器
+
+## 🔒 安全特性
+
+- **JWT 认证** - 安全的用户认证
+- **Token 自动刷新** - 自动处理 token 过期
+- **输入验证** - 客户端和服务端验证
+- **XSS 防护** - 防止跨站脚本攻击
+
+## 📱 浏览器支持
+
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+## 🤝 贡献指南
+
+1. Fork 项目
+2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 创建 Pull Request
+
+## 📄 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+
+## 📞 支持
+
+如有问题，请通过以下方式联系：
+
+- 创建 [Issue](https://github.com/your-repo/natours/issues)
+- 发送邮件至: support@natours.com
+
+---
+
+**享受您的 Natours 之旅！** 🌟

@@ -2,6 +2,17 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
 	/* config options here */
+	images: {
+		domains: ['localhost'],
+		remotePatterns: [
+			{
+				protocol: 'http',
+				hostname: 'localhost',
+				port: '8000',
+				pathname: '/img/**',
+			},
+		],
+	},
 	// 异步函数，用于定义重定向规则
 	async redirects() {
 		return [

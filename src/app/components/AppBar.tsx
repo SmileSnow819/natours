@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { useAuth } from '../contexts/AuthContext';
 
 // 使用 Lucide 风格的 SVG 图标作为 Logo 占位
 const GlobeIcon = (props: any) => (
@@ -22,7 +23,13 @@ const GlobeIcon = (props: any) => (
 );
 
 // 导航按钮组件
-const NavButton = ({ children, primary = false, onClick }) => (
+interface NavButtonProps {
+	children: React.ReactNode;
+	primary?: boolean;
+	onClick: () => void;
+}
+
+const NavButton = ({ children, primary = false, onClick }: NavButtonProps) => (
 	<button
 		onClick={onClick}
 		className={`
@@ -39,7 +46,20 @@ const NavButton = ({ children, primary = false, onClick }) => (
 );
 
 const AppBar = () => {
-	// 模拟应用状态，用于点击事件演示
+	const { user, logout, isAuthenticated } = useAuth();
+
+	const handleLogin = () => {
+		window.location.href = '/login';
+	};
+
+	const handleSignup = () => {
+		window.location.href = '/signup';
+	};
+
+	const handleLogout = () => {
+		logout();
+		window.location.href = '/';
+	};
 
 	return (
 		<>
@@ -47,6 +67,11 @@ const AppBar = () => {
 			<header className="h-20 sticky top-0 bg-white shadow-lg z-10 w-full px-4 sm:px-8 flex items-center justify-between">
 				{/* 1. 左侧 - 导航链接 */}
 				<div className="flex items-center space-x-4">
+					<Link href={'/'}>
+						<button className="text-teal-600 hover:text-teal-800 font-medium transition-colors text-sm sm:text-base p-2 rounded-md cursor-pointer">
+							首页
+						</button>
+					</Link>
 					<Link href={'/tours'}>
 						<button className="text-teal-600 hover:text-teal-800 font-medium transition-colors text-sm sm:text-base p-2 rounded-md cursor-pointer">
 							所有旅游
@@ -63,12 +88,25 @@ const AppBar = () => {
 					</span>
 				</div>
 
-				{/* 3. 右侧 - 注册与登录按钮 */}
+				{/* 3. 右侧 - 用户操作按钮 */}
 				<div className="flex items-center space-x-3">
-					<NavButton onClick={() => console.log('login')}>登录</NavButton>
-					<NavButton primary onClick={() => console.log('signup')}>
-						注册
-					</NavButton>
+					{isAuthenticated ? (
+						<>
+							<Link href="/profile">
+								<button className="text-teal-600 hover:text-teal-800 font-medium transition-colors text-sm sm:text-base p-2 rounded-md cursor-pointer">
+									{user?.name}
+								</button>
+							</Link>
+							<NavButton onClick={handleLogout}>退出</NavButton>
+						</>
+					) : (
+						<>
+							<NavButton onClick={handleLogin}>登录</NavButton>
+							<NavButton primary onClick={handleSignup}>
+								注册
+							</NavButton>
+						</>
+					)}
 				</div>
 			</header>
 		</>

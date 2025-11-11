@@ -25,8 +25,8 @@ export interface Tour {
 	_id: string;
 	id: string;
 	name: string;
-	duration: string;
-	maxGroupSize: string;
+	duration: number;
+	maxGroupSize: number;
 	difficulty: string;
 	price: number;
 	summary: string;
